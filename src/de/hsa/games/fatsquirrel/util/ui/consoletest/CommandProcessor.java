@@ -8,14 +8,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 
-public class MyFavoriteCommandProcessor {
+public class CommandProcessor {
 
     private final PrintStream outputStream = new PrintStream(System.out);
     private final BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
-    private final CommandScanner commandScanner = new CommandScanner(MyFavoriteCommandType.values(), inputReader);
+    private final CommandScanner commandScanner = new CommandScanner(CommandType.values(), inputReader);
 
     public static void main(String[] args) throws IOException {
-        MyFavoriteCommandProcessor processor =  new MyFavoriteCommandProcessor();
+        CommandProcessor processor = new CommandProcessor();
         processor.process();
     }
 
@@ -26,7 +26,7 @@ public class MyFavoriteCommandProcessor {
 
             Object[] params = command.getParams();
 
-            MyFavoriteCommandType commandType = (MyFavoriteCommandType) command.getCommandTypeInfo();
+            CommandType commandType = (CommandType) command.getCommandTypeInfo();
 
             switch (commandType) {
                 case EXIT:
@@ -47,19 +47,26 @@ public class MyFavoriteCommandProcessor {
         }
     }
 
-    private void echo(String param, int param1) {
+    private void echo(String str, int amount) {
+        for (int i = 0; i < amount; i++) {
+            outputStream.println(str);
+        }
     }
 
-    private void addf(float param, float param1) {
+    private void addf(float f0, float f1) {
+        outputStream.println(f0 + " + " + f1 + " = " + f0 + f1);
     }
 
-    private void addi(int param, int param1) {
+    private void addi(int i0, int i1) {
+        outputStream.println(i0 + " + " + i1 + " = " + i0 + i1);
     }
 
     private void help() {
+        for (CommandType cT: CommandType.values()) {
+            outputStream.println(cT.getName() + " | " + cT.getHelpText());
+        }
 
     }
-
 
 
 }

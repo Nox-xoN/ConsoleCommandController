@@ -2,7 +2,7 @@ package de.hsa.games.fatsquirrel.util.ui.consoletest;
 
 import de.hsa.games.fatsquirrel.util.ui.CommandTypeInfo;
 
-public enum MyFavoriteCommandType implements CommandTypeInfo {
+public enum CommandType implements CommandTypeInfo {
 
     HELP("help", "  * list all commands"),
     EXIT("exit", "  * exit program"),
@@ -14,13 +14,13 @@ public enum MyFavoriteCommandType implements CommandTypeInfo {
     private final String helpText;
     private Class[] params;
 
-    MyFavoriteCommandType(String commandName, String helpText, Class... params) {
+    CommandType(String commandName, String helpText, Class... params) {
         this.commandName = commandName;
         this.helpText = helpText;
         this.params = params;
     }
 
-    MyFavoriteCommandType(String commandName, String helpText) {
+    CommandType(String commandName, String helpText) {
         this.commandName = commandName;
         this.helpText = helpText;
     }
