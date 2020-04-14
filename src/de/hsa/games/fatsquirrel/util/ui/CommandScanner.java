@@ -20,8 +20,8 @@ public class CommandScanner implements CommandTypeInfo {
 
     public Command next() throws IOException {
 
+        Object[] params;
         CommandTypeInfo commandTypeInfo;
-
 
         String string = inputReader.readLine();
         String[] splitString = string.split(" ");
@@ -33,17 +33,22 @@ public class CommandScanner implements CommandTypeInfo {
 
         if (type.getParamTypes() != null)
         {
-            Object[] params = new Object[type.getParamTypes().length];
+            params = new Object[type.getParamTypes().length];
 
-            if(type.getParamTypes()[0] instanceof Float)
-            {
-                params[0] = Float.parseFloat(splitString[1]);
-                params[1] = Float.parseFloat(splitString[2]);
-            }
-            else
-            {
-                params[0] = Integer.parseInt(splitString[1]);
-                params[1] = Integer.parseInt(splitString[2]);
+            for (int i = 0; i < params.length; i++) {
+
+                if(type.getParamTypes()[i].getCanonicalName() == "float")
+                {
+                    params[i] = Float.parseFloat(splitString[i+1]);
+                }
+                else if(type.getParamTypes()[i].getCanonicalName() == "java.lang.String")
+                {
+                    params[i] = splitString[i+1];
+                }
+                else if(type.getParamTypes()[i].getCanonicalName() == "int")
+                {
+                    params[i] = Integer.parseInt(splitString[i+1]);
+                }
             }
         }
         else

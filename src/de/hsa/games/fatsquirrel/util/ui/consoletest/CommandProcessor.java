@@ -54,11 +54,11 @@ public class CommandProcessor {
     }
 
     private void addf(float f0, float f1) {
-        outputStream.println(f0 + " + " + f1 + " = " + f0 + f1);
+        outputStream.println(f0 + " + " + f1 + " = " + (f0 + f1));
     }
 
     private void addi(int i0, int i1) {
-        outputStream.println(i0 + " + " + i1 + " = " + i0 + i1);
+        outputStream.println(i0 + " + " + i1 + " = " + (i0 + i1));
     }
 
     private void help() {
