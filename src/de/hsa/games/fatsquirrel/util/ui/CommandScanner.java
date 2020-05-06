@@ -6,7 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
 
-public class CommandScanner implements CommandTypeInfo {
+public class CommandScanner {
 
     private CommandTypeInfo[] commandTypeInfos;
     private BufferedReader inputReader;
@@ -19,56 +19,57 @@ public class CommandScanner implements CommandTypeInfo {
     }
 
     public Command next() throws IOException {
+        String line = "";
+        String[] str;
+        Command command = null;
 
-        Object[] params;
-        CommandTypeInfo commandTypeInfo;
+        try {
+            line = inputReader.readLine();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
-        String string = inputReader.readLine();
-        String[] splitString = string.split(" ");
+        str = line.split(" ");
 
-        CommandType type = CommandType.valueOf(splitString[0].toUpperCase());
+        for (int i = 0; i < commandTypeInfos.length; i++) {
+            if (str[0].equals(commandTypeInfos[i].getName())) {
 
-        if (type.getName() == splitString[0])
-            return null;
+                Class<?>[] paramsClass = commandTypeInfos[i].getParamTypes();
+                Object[] params = new Object[paramsClass.length];
 
-        if (type.getParamTypes() != null)
-        {
-            params = new Object[type.getParamTypes().length];
+                if (paramsClass.length > 0) {
+                    for (int j = 0; j < paramsClass.length; j++) {
+                        Class<?> c = paramsClass[j];
 
-            for (int i = 0; i < params.length; i++) {
-
-                if(type.getParamTypes()[i].getCanonicalName() == "float")
-                {
-                    params[i] = Float.parseFloat(splitString[i+1]);
-                }
-                else if(type.getParamTypes()[i].getCanonicalName() == "java.lang.String")
-                {
-                    params[i] = splitString[i+1];
-                }
-                else if(type.getParamTypes()[i].getCanonicalName() == "int")
-                {
-                    params[i] = Integer.parseInt(splitString[i+1]);
+                        if (c.equals(int.class)) {
+                            params[j] = new Integer(str[j + 1]);
+                        } else if (c.equals(float.class)) {
+                            params[j] = new Float(str[j + 1]);
+                        } else if (c.equals(String.class)) {
+                            params[j] = new String(str[j + 1]);
+                        } else if (c.equals(XY.class)) {
+                            switch (commandTypeInfos[i].getName()) {
+                                case "a":
+                                    params[j] = XY.LEFT;
+                                    break;
+                                case "s":
+                                    params[j] = XY.DOWN;
+                                    break;
+                                case "d":
+                                    params[j] = XY.RIGHT;
+                                    break;
+                                case "w":
+                                    params[j] = XY.UP;
+                                    break;
+                                case "":
+                                    params[j] = XY.STAND_STILL;
+                            }
+                        }
+                    }
+                    command = new Command(commandTypeInfos[i], params);
                 }
             }
         }
-        else
-            params = null;
-
-        return new Command(type, params);
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public String getHelpText() {
-        return null;
-    }
-
-    @Override
-    public Class<?>[] getParamTypes() {
-        return null;
+        return command;
     }
 }

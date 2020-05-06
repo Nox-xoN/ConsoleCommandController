@@ -1,6 +1,6 @@
 package de.hsa.games.fatsquirrel.util.ui;
 
-public class Command implements CommandTypeInfo{
+public class Command {
 
     private final CommandTypeInfo commandTypeInfo;
     private final Object[] params;
@@ -10,20 +10,6 @@ public class Command implements CommandTypeInfo{
         this.params = params;
     }
 
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public String getHelpText() {
-        return null;
-    }
-
-    @Override
-    public Class<?>[] getParamTypes() {
-        return null;
-    }
 
     public Object[] getParams() {
         return params;

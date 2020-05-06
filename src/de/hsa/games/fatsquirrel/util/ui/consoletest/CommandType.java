@@ -1,5 +1,4 @@
 package de.hsa.games.fatsquirrel.util.ui.consoletest;
-
 import de.hsa.games.fatsquirrel.util.ui.CommandTypeInfo;
 
 public enum CommandType implements CommandTypeInfo {
